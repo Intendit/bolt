@@ -325,9 +325,11 @@ class Config
     {
         // Read the config and merge it. (note: We use temp variables to prevent
         // "Only variables should be passed by reference")
+
+        $globalconfig = $this->parseConfigYaml('config.yml', '/var/bmss/config');
         $tempconfig = $this->parseConfigYaml('config.yml');
         $tempconfiglocal = $this->parseConfigYaml('config_local.yml');
-        $general = Arr::mergeRecursiveDistinct($tempconfig, $tempconfiglocal);
+        $general = Arr::mergeRecursiveDistinct($globalconfig, $tempconfig, $tempconfiglocal);
 
         // Make sure old settings for 'contentsCss' are still picked up correctly
         if (isset($general['wysiwyg']['ck']['contentsCss'])) {
