@@ -21,7 +21,6 @@
     height: 100%;
     left: -$nav-secondary-small-width;
     transition: left 0.1s, width 0.1s;
-    box-shadow: -5px 0 0 rgba(0, 0, 0, 0.15) inset;
     background: $sidebarbackground;
     color: $sidebartextcolour;
     font-size: 120%;
@@ -161,19 +160,14 @@
     a:focus {
         color: $sidebarlinkhover;
         background: $sidebarbackgroundhover;
-        i.icon {
-            background: $sidebarlinkhover;
-        }
     }
 
     & > em {
         font-weight: bold;
         font-style: normal;
-        color: lighten($sidebarbackgroundactive, 40);
 
         i.icon {
             background: none;
-            color: lighten($sidebarbackgroundactive, 40);
             top: 17px;
         }
     }
@@ -233,10 +227,10 @@
         text-indent: 0;
         font-style: normal;
         font-weight: bold;
-        background: $sidebarlink;
+        background: #eee;
         border-radius: 3px;
         font-size: ($nav-secondary-icon-size - 8px);
-        color: #333;
+        color: $sidebarlink;
         position: absolute;
         left: 12px;
         top: 10px;
