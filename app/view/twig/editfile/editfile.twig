@@ -79,7 +79,7 @@
     </div>
 
     {% if context.filetype in ['twig', 'html', 'htm'] %}
-        {% set codemirror = ['xml', 'javascript', 'css', 'htmlmixed'] %}
+        {% set codemirror = ['htmltwig', 'xml', 'javascript', 'css', 'htmlmixed', 'twig'] %}
     {% elseif context.filetype == "php" %}
         {% set codemirror = ['matchbrackets', 'javascript', 'css', 'htmlmixed', 'clike', 'php'] %}
     {% elseif context.filetype == "yml" %}

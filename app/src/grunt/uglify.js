@@ -53,9 +53,11 @@ module.exports = {
                 'clike.js',
                 'css.js',
                 'htmlmixed.js',
+                'htmltwig.js',
                 'javascript.js',
                 'markdown.js',
                 'matchbrackets.js',
+                'twig.js',
                 'php.js',
                 'xml.js',
                 'yaml.js'
