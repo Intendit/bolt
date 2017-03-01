@@ -61,7 +61,10 @@ module.exports = {
                 'twig.js',
                 'php.js',
                 'xml.js',
-                'yaml.js'
+                'yaml.js',
+                'fold/foldcode.js',
+                'fold/foldgutter.js',
+                'fold/indent-fold.js'
             ],
             dest: '<%= path.dest.js %>/ckeditor/plugins/codemirror/plugins'
         }]
