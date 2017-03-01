@@ -50,6 +50,7 @@ module.exports = {
             ext: '.min.js',
             cwd: '<%= path.src.lib %>/codemirror',
             src: [
+                'overlay.js',
                 'clike.js',
                 'css.js',
                 'htmlmixed.js',
