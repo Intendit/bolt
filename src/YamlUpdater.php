@@ -76,8 +76,9 @@ class YamlUpdater
     /**
      * Updates a single value with replacement for given key in yml file.
      *
-     * @param string $key
-     * @param string $value
+     * @param string  $key
+     * @param string  $value
+     * @param boolean $makebackup
      *
      * @return boolean
      */
@@ -93,7 +94,7 @@ class YamlUpdater
         }
 
         $line = substr_count($this->file->read(), "\n", 0, $index);
-        $this->yaml[$line] = preg_replace('/^(.*):(.*)/', "$1: ".$this->prepareValue($value), $this->yaml[$line]);
+        $this->yaml[$line] = preg_replace('/^(.*?):(.*)/', "$1: ".$this->prepareValue($value), $this->yaml[$line]);
 
         return $this->save($makebackup);
     }

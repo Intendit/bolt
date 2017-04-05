@@ -36,9 +36,9 @@ class ImageHandler
      *
      * @return string Image path
      */
-    public function image($filename = '', $width = 0, $height = 0, $crop = '')
+    public function image($filename = '', $width = null, $height = null, $crop = '')
     {
-        if ($width !== 0 || $height !== 0) {
+        if ($width !== null || $height !== null) {
             // You don't want the image, you just want a thumbnail.
             return $this->thumbnail($filename, $width, $height, $crop);
         }
@@ -116,8 +116,15 @@ class ImageHandler
 
         try {
             // Get the EXIF data of the image
-            $exif = $reader->read($fullpath);
+            if (false === $exif = $reader->read($fullpath)) {
+                throw new \RuntimeException();
+            }
         } catch (\RuntimeException $e) {
+            // No EXIF data… create an empty object.
+            $exif = new Exif();
+        }
+
+        if (is_bool($exif) && !$exif) {
             // No EXIF data… create an empty object.
             $exif = new Exif();
         }
@@ -172,18 +179,18 @@ class ImageHandler
      *
      * @return string HTML output
      */
-    public function popup($filename = '', $width = 0, $height = 0, $crop = '', $title = '')
+    public function popup($filename = '', $width = null, $height = null, $crop = '', $title = '')
     {
         if (empty($filename)) {
-            return '&nbsp;';
+            return '';
         } else {
             $thumbconf = $this->app['config']->get('general/thumbnails');
 
-            if ($width === 0) {
+            if ($width === null) {
                 $width = !empty($thumbconf['default_thumbnail'][0]) ? $thumbconf['default_thumbnail'][0] : 160;
             }
 
-            if ($height === 0) {
+            if ($height === null) {
                 $height = !empty($thumbconf['default_thumbnail'][1]) ? $thumbconf['default_thumbnail'][1] : 120;
             }
 
@@ -242,10 +249,10 @@ class ImageHandler
      *
      * @return string HTML output
      */
-    public function showImage($filename = '', $width = 0, $height = 0, $crop = '')
+    public function showImage($filename = '', $width = null, $height = null, $crop = '')
     {
         if (empty($filename)) {
-            return '&nbsp;';
+            return '';
         } else {
             if (isset($filename['alt'])) {
                 $alt = $filename['alt'];
@@ -255,21 +262,21 @@ class ImageHandler
                 $alt = '';
             }
 
-            if ($width === 0 && $height === 0) {
+            if (($width === null || $width === 0) && ($height === null || $height === 0)) {
                 $thumbconf = $this->app['config']->get('general/thumbnails');
                 $width = !empty($thumbconf['default_image'][0]) ? $thumbconf['default_image'][0] : 1000;
                 $height = !empty($thumbconf['default_image'][1]) ? $thumbconf['default_image'][1] : 750;
-            } elseif ($width === 0 xor $height === 0) {
+            } elseif (($width === null || $width === 0) xor ($height === null || $height === 0)) {
                 if (is_array($filename)) {
                     $filename = isset($filename['filename']) ? $filename['filename'] : $filename['file'];
                 }
 
                 $info = $this->imageInfo($filename, false);
 
-                if ($width !== 0) {
+                if ($height === null || $height === 0) {
                     $width = min($width, $info['width']);
                     $height = round($width / $info['aspectratio']);
-                } elseif ($height !== 0) {
+                } elseif ($width === null || $width === 0) {
                     $height = min($height, $info['height']);
                     $width = round($height * $info['aspectratio']);
                 } else {
@@ -296,21 +303,21 @@ class ImageHandler
      * @param string  $filename Target filename
      * @param integer $width    Target width
      * @param integer $height   Target height
-     * @param string  $zoomcrop Zooming and cropping: Set to 'f(it)', 'b(orders)', 'r(esize)' or 'c(rop)'
-     *                             Set width or height parameter to '0' for proportional scaling
-     *                             Setting them to '' uses default values.
+     * @param string  $crop     Zooming and cropping: Set to 'f(it)', 'b(orders)', 'r(esize)' or 'c(rop)'
+     *                          Set width or height parameter to '0' for proportional scaling
+     *                          Setting them to '' uses default values.
      *
      * @return string Thumbnail path
      */
-    public function thumbnail($filename = '', $width = 0, $height = 0, $crop = '')
+    public function thumbnail($filename = '', $width = null, $height = null, $crop = '')
     {
         $thumbconf = $this->app['config']->get('general/thumbnails');
 
-        if ($width === 0) {
+        if ($width === null) {
             $width = !empty($thumbconf['default_thumbnail'][0]) ? $thumbconf['default_thumbnail'][0] : 100;
         }
 
-        if ($height === 0) {
+        if ($height === null) {
             $height = !empty($thumbconf['default_thumbnail'][1]) ? $thumbconf['default_thumbnail'][1] : 100;
         }
 

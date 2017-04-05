@@ -487,12 +487,7 @@ class Content implements \ArrayAccess
 
         // Get the relations from the POST-ed values.
         if (!empty($values['relation']) && is_array($values['relation'])) {
-            foreach($values['relation'] as $key => $relationValues) {
-                $this->clearRelation($key);
-                foreach($relationValues as $value) {
-                    $this->setRelation($key, $value);
-                }
-            }
+            $this->relation = $values['relation'];
             unset($values['relation']);
         } else {
             $this->relation = array();
@@ -875,16 +870,36 @@ class Content implements \ArrayAccess
                     $value = $maid->clean($value);
                     $value = new \Twig_Markup($value, 'UTF-8');
                     break;
-
                 case 'html':
                 case 'text':
                 case 'textarea':
 
                     $value = $this->preParse($this->values[$name], $allowtwig);
+
+                    $config = $this->app['config']->get('general/htmlcleaner');
+
+                    $fullconf = $this->app['config']->get('general');
+
+                    // basically, if add_canonical is set it is a SEO site, and we shouldn't clean it (because microdata/whatever)
+                    if (!isset($fullconf['add_canonical'])) {
+                        $allowed_tags = !empty($config['allowed_tags']) ? $config['allowed_tags'] :
+                            array('div', 'p', 'br', 'hr', 's', 'u', 'strong', 'em', 'i', 'b', 'li', 'ul', 'ol', 'blockquote', 'pre', 'code', 'tt', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'dd', 'dl', 'dt', 'table', 'tbody', 'thead', 'tfoot', 'th', 'td', 'tr', 'a', 'img');
+                        $allowed_attributes = !empty($config['allowed_attributes']) ? $config['allowed_attributes'] :
+                            array('id', 'class', 'name', 'value', 'href', 'src');
+
+                        // Sanitize/clean the HTML.
+                        $maid = new Maid(
+                            array(
+                                'output-format'   => 'html',
+                                'allowed-tags'    => $allowed_tags,
+                                'allowed-attribs' => $allowed_attributes
+                            )
+                        );
+                        $value = $maid->clean($value);
+                    }
+
                     $value = new \Twig_Markup($value, 'UTF-8');
-
                     break;
-
                 case 'imagelist':
                 case 'filelist':
                     if (is_string($this->values[$name])) {
@@ -1003,11 +1018,16 @@ class Content implements \ArrayAccess
         $titleParts = array();
 
         foreach ($this->getTitleColumnName() as $fieldName) {
-            $titleParts[] = strip_tags($this->values[$fieldName]);
+            $val = strip_tags($this->values[$fieldName]);
+            if($val){
+                $titleParts[] = ' ' . $val;
+            }else{
+                $titleParts[] = $fieldName;
+            }
         }
 
         if (!empty($titleParts)) {
-            $title = implode(' ', $titleParts);
+            $title = implode($titleParts);
         } else {
             // nope, no title was found.
             $title = '(untitled)';

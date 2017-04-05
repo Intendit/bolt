@@ -77,7 +77,8 @@ class Frontend
      */
     public function homepage(Silex\Application $app)
     {
-        $content = $app['storage']->getContent($app['config']->get('general/homepage'));
+        $homepage = $app['config']->get('theme/homepage') ?: $app['config']->get('general/homepage');
+        $content = $app['storage']->getContent($homepage);
 
         $template = $app['templatechooser']->homepage();
 
@@ -118,6 +119,8 @@ class Frontend
 
         $slug = $app['slugify']->slugify($slug);
 
+        $slug = rtrim($slug, '/');
+
         // First, try to get it by slug.
         $content = $app['storage']->getContent($contenttype['slug'], array('slug' => $slug, 'returnsingle' => true, 'log_not_found' => !is_numeric($slug)));
 
@@ -140,6 +143,9 @@ class Frontend
         if ($content->isHome() && ($template == $app['config']->get('general/homepage_template'))) {
             $app['resources']->setUrl('canonicalurl', $paths['rooturl']);
         } else {
+            if ($app['request']->getPathInfo() !== $content->link() && $app['request']->getMethod() === "GET") {
+                return $app->redirect($content->link(), 301);
+            }
             $url = $paths['canonical'] . $content->link();
             $app['resources']->setUrl('canonicalurl', $url);
         }
@@ -235,10 +241,10 @@ class Frontend
         $query = $app['request']->query;
         // First, get some content
         $page = $query->get($pagerid, $query->get('page', 1));
-        $amount = (!empty($contenttype['listing_records']) ? $contenttype['listing_records'] : $app['config']->get('general/listing_records'));
+        $amount = (!empty($contenttype['listing_records']) ? $contenttype['listing_records'] : ($app['config']->get('theme/listing_records') ?: $app['config']->get('general/listing_records')));
 
-        if (!$order = $app['config']->get('theme/listing_sort', false)) {
-            $order = empty($contenttype['sort']) ? null : $contenttype['sort'];
+        if (!$order = (empty($contenttype['listing_sort']) ? false : $contenttype['listing_sort'])) {
+            $order = $app['config']->get('theme/listing_sort', $app['config']->get('general/listing_sort', null));
         }
 
         // If $order is not set, one of two things can happen: Either we let `getContent()` sort by itself, or we
@@ -297,8 +303,8 @@ class Frontend
          /* @var $query \Symfony\Component\HttpFoundation\ParameterBag */
         $query = $app['request']->query;
         $page = $query->get($pagerid, $query->get('page', 1));
-        $amount = $app['config']->get('general/listing_records');
-        $order = $app['config']->get('general/listing_sort');
+        $amount = $app['config']->get('theme/listing_records') ?: $app['config']->get('general/listing_records');
+        $order = $app['config']->get('theme/listing_sort') ?: $app['config']->get('general/listing_sort');
 
         // Handle case where listing records has been override for specific taxonomy
         if (array_key_exists('listing_records', $taxonomy) && is_int($taxonomy['listing_records'])) {

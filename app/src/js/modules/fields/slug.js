@@ -68,10 +68,10 @@
                 id: fconf.contentId
             };
 
-        field.lock.on('click', function () {
+        field.lock.on('click', function (event, forced) {
             if (field.group.hasClass('locked')) {
                 // "unlock" if it's currently empty, _or_ we've confirmed that we want to do so.
-                if (fconf.isEmpty || confirm(bolt.data('field.slug.message.unlock'))) {
+                if (forced || fconf.isEmpty || confirm(bolt.data('field.slug.message.unlock'))) {
                     field.group.removeClass('locked').addClass('unlocked');
                     startAutoGeneration(field);
                 }

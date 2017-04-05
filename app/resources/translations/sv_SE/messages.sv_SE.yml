@@ -1,10 +1,10 @@
 # app/resources/translations/sv_SE/messages.sv_SE.yml – generated on 2016-03-31 11:43:41 UTC
 
 # Warning: Translations are in the process of being moved to a new keyword-based translation
-#          at the moment. This is an ongoing process. Translations currently in the 
-#          repository are automatically mapped to the new scheme. Be aware that there 
-#          can be a race condition between that process and your PR so that it's 
-#          eventually necessary to remap your translations. If you're planning on 
+#          at the moment. This is an ongoing process. Translations currently in the
+#          repository are automatically mapped to the new scheme. Be aware that there
+#          can be a race condition between that process and your PR so that it's
+#          eventually necessary to remap your translations. If you're planning on
 #          updating your translations, it's best to ask on IRC to time your contribution
 #          in order to prevent merge conflicts.
 
@@ -16,11 +16,11 @@
 
 #--- 29 untranslated messages -------------------------------------------------
 
-"Add Selected": #
-"Are you sure you wish to delete these records? There is no undo.": #
+"Add Selected": "Lägg till valda" #
+"Are you sure you wish to delete these records? There is no undo.": "Är du söker på att du vill ta bort dessa inlägg?" #
 "Before you can start using the theme on your site we need to make a copy to your theme folder.": #
-"Check/Uncheck all": #
-"Configure Extensions": #
+"Check/Uncheck all": "Bocka i/avbocka alla" #
+"Configure Extensions": "Konfigurera tillägg" #
 "Detected Bolt version change to <b>%VERSION%</b>, and the cache has been cleared. Please <a href=\"%URI%\">check the database</a>, if you haven't done so already.": #
 "Extend %boltname%": #
 "Extensions loading has been disabled by an administrator in the %config% file. ": #
@@ -38,9 +38,9 @@
 "There was an error uploading the file.\\nMake sure that the file type is of:\\n%typelist%": # "There was an error uploading the file.\\\nMake sure that the file type is of:\\\n%typelist%\n"
 "This website is <a href='%url%' target='_blank' title='Sophisticated, lightweight & simple CMS'>Built with Bolt</a>.": # "Sítio criado em <a href='%url%' target='_blank' title='Sofisticado, leve e simples - CMS Bolt'>CMS Bolt</a>."
 "Unfortunately, no content could be found. Try another page, or go to the <a href=\"%paths_root%\">homepage</a>.": #
-"Unique Alias": #
-"Uploading": #
-"View/install Extensions": #
+"Unique Alias": "Unikt alias" #
+"Uploading": "Laddar upp" #
+"View/install Extensions": "Se och installera tillägg" #
 "You do not have the right privileges to %ACTION% that record.": #
 "You do not have the right privileges to upload.": #
 "cURL experienced an error: %errormessage%": #
@@ -48,12 +48,12 @@
 
 #--- 6 untranslated keyword based messages ------------------------------------
 
-"field.general.select-from-stack": # "Select from stack"
-"field.geolocation.title-pin": # "Marker"
-"field.slug.message.set": # "Set the slug to:"
-"field.slug.message.unlock": # "Are you sure you wish to unlock the slug? This might break existing links to this record."
-"field.video.preview.button.close": # "Close"
-"field.video.preview.no-url": # "No video url is set, no video to show."
+"field.general.select-from-stack": "Välj från filhögen" # "Select from stack"
+"field.geolocation.title-pin": "Markör" # "Marker"
+"field.slug.message.set": "Sätt permalänk till" # "Set the slug to:"
+"field.slug.message.unlock": "Är du säker på att du vill låsa upp permalänken?" # "Are you sure you wish to unlock the slug? This might break existing links to this record."
+"field.video.preview.button.close": "Stäng" # "Close"
+"field.video.preview.no-url": "Ingen video vald" # "No video url is set, no video to show."
 
 #--- 407 translations ---------------------------------------------------------
 

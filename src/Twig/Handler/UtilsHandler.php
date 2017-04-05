@@ -53,7 +53,8 @@ class UtilsHandler
             // pretend we don't know anything about any files
             return false;
         } else {
-            return file_exists($fn);
+            $path = $this->app['resources']->getPath('web') . $fn;
+            return file_exists($path);
         }
     }
 
@@ -118,6 +119,7 @@ class UtilsHandler
     /**
      * Redirect the browser to another page.
      *
+     * @param string  $path
      * @param boolean $safe
      *
      * @return string

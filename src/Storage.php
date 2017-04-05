@@ -494,7 +494,7 @@ class Storage
      *
      * @return bool
      */
-    private function updateContent(Bolt\Content $content, $comment = null)
+    public function updateContent(Bolt\Content $content, $comment = null)
     {
         $tablename = $this->getContenttypeTablename($content->contenttype);
 
@@ -1005,7 +1005,7 @@ class Storage
         // Sort on either 'ascending' or 'descending'
         // Make sure we set the order.
         $order = 'ASC';
-        $taxonomysort = strtoupper($this->app['config']->get('general/taxonomy_sort'));
+        $taxonomysort = strtoupper($this->app['config']->get('theme/taxonomy_sort') ?: $this->app['config']->get('general/taxonomy_sort'));
         if ($taxonomysort == 'DESC') {
             $order = 'DESC';
         }
@@ -1134,8 +1134,8 @@ class Storage
     /**
      * Set the QueryBuilder where parameters.
      *
-     * @param QueryBuilder $query
-     * @param string       $type
+     * @param string $contenttypeSlug
+     * @param string $type
      *
      * @return array|false
      */

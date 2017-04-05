@@ -323,6 +323,11 @@ class Omnisearch
             $finder->contains($contains);
         }
 
+        $dirPrefix = '';
+        if ($path === 'theme') {
+            $dirPrefix = ltrim($this->app['config']->get('general/theme') . '/', '/');
+        }
+
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ($finder as $file) {
             $relativePathname = $file->getRelativePathname();
@@ -331,7 +336,7 @@ class Omnisearch
             $this->register(
                 array(
                     'label'       => sprintf("%s » <span>%s</span>", Trans::__('Edit file'), $filename),
-                    'path'        => $this->app->generatePath('fileedit', array('namespace' => 'theme', 'file' => $relativePathname)),
+                    'path'        => $this->app->generatePath('fileedit', array('namespace' => 'theme', 'file' => $dirPrefix . $relativePathname)),
                     'description' => '',
                     'priority'    => self::OMNISEARCH_FILE + $priority,
                     'keywords'    => array('Edit file', $filename, $query)

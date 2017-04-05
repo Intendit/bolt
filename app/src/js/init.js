@@ -92,8 +92,39 @@ var init = {
             var editor = CodeMirror.fromTextArea(document.getElementById('form_contents'), {
                 lineNumbers: true,
                 autofocus: true,
+                foldGutter: {
+                    rangeFinder: CodeMirror.fold.indent
+                },
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                extraKeys: {
+                    "Ctrl-Q": function(cm){
+                        cm.foldCode(
+                            cm.getCursor(),
+                            {
+                                rangeFinder: CodeMirror.fold.indent,
+                                minFoldSize: 3
+                            }
+                        );
+                    },
+                    "Tab": function(cm) {
+                        if (cm.somethingSelected()) {
+                            cm.indentSelection("add");
+                        } else {
+                            cm.replaceSelection(cm.getOption("indentWithTabs")? "\t":
+                            Array(cm.getOption("indentUnit") + 1).join(" "), "end", "+input");
+                        }
+                    },
+                    "Ctrl-S": function() {
+                         $('#saveeditfile').click();
+                    },
+                    "Ctrl-/": "undo",
+                    "Ctrl-F": "findPersistent",
+                    "Ctrl-H": "replaceAll",
+                    "Ctrl-Space": "autocomplete"
+                },
                 tabSize: 4,
                 indentUnit: 4,
+                theme: Bolt.conf('ckeditor').codemirror_theme,
                 indentWithTabs: false,
                 readOnly: data.readonly
             });

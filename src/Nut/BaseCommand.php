@@ -5,6 +5,7 @@ namespace Bolt\Nut;
 use Bolt\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Nut building block
@@ -22,6 +23,10 @@ abstract class BaseCommand extends Command
     {
         parent::__construct();
         $this->app = $app;
+
+        $this
+            ->addOption('site', null, InputOption::VALUE_OPTIONAL, "Specify site to use")
+            ->addOption('bolt_version', null, InputOption::VALUE_OPTIONAL, "Specify bolt_version to use");
 
         /*
          * We need this to exist for $app['logger.system'] and $app['storage']

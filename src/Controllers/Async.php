@@ -107,7 +107,8 @@ class Async implements ControllerProviderInterface
      */
     public function dashboardnews(Silex\Application $app, Request $request)
     {
-        $source = 'http://news.bolt.cm/';
+        $source = $app['config']->get('general/news_source');
+        $newsVariable = $app['config']->get('general/news_variable');
         $news = $app['cache']->fetch('dashboardnews'); // Two hours.
         $hostname = $request->getHost();
         $body = '';
@@ -158,7 +159,7 @@ class Async implements ControllerProviderInterface
                     /** @var $fetchedNewsData \GuzzleHttp\Message\Response */
                     $fetchedNewsData = $client->get($url, $guzzleOptions)->getBody(true);
                 }
-                $fetchedNewsItems = json_decode($fetchedNewsData);
+                $fetchedNewsItems = json_decode($fetchedNewsData)->$newsVariable;
 
                 if ($fetchedNewsItems) {
                     $news = array();

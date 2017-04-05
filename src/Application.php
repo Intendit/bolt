@@ -25,14 +25,14 @@ class Application extends Silex\Application
     /**
      * The default locale, used as fallback.
      */
-    const DEFAULT_LOCALE = 'en_GB';
+    const DEFAULT_LOCALE = 'sv_SE';
 
     /**
      * @param array $values
      */
     public function __construct(array $values = array())
     {
-        $values['bolt_version'] = '2.2.23';
+        $values['bolt_version'] = '2.2.24';
         $values['bolt_name'] = '';
         $values['bolt_released'] = true; // `true` for stable releases, `false` for alpha, beta and RC.
 
@@ -562,15 +562,19 @@ class Application extends Silex\Application
 
         // true if we need to consider adding html snippets
         // note we exclude cached requests where no additions should be made to the HTML
-        if (isset($this['htmlsnippets']) && ($this['htmlsnippets'] === true) && ($response->headers->get('Cache-Control') === "no-cache")) {
+        if (isset($this['htmlsnippets'])
+            && ($this['htmlsnippets'] === true)
+            && (in_array($response->headers->get('Cache-Control'), array('no-cache','private, must-revalidate'))
+            && ($this['config']->getWhichEnd() !== "async"))
+        ) {
             // only add when content-type is text/html
             if (strpos($response->headers->get('Content-Type'), 'text/html') !== false) {
                 // Add our meta generator tag.
-                $this['extensions']->insertSnippet(Extensions\Snippets\Location::END_OF_HEAD, '<meta name="generator" content="Bolt">');
+                //$this['extensions']->insertSnippet(Extensions\Snippets\Location::END_OF_HEAD, '<meta name="generator" content="Bolt">');
 
                 // Perhaps add a canonical link.
 
-                if ($this['config']->get('general/canonical')) {
+                if ($this['config']->get('general/canonical') && $this['config']->get('general/add_canonical', true)) {
                     $snippet = sprintf(
                         '<link rel="canonical" href="%s">',
                         htmlspecialchars($this['resources']->getUrl('canonicalurl'), ENT_QUOTES)
@@ -639,10 +643,11 @@ class Application extends Silex\Application
 
         $end = $this['config']->getWhichEnd();
         if (($exception instanceof HttpException) && ($end == 'frontend')) {
-            if (substr($this['config']->get('general/notfound'), -5) === '.twig') {
-                return $this['render']->render($this['config']->get('general/notfound'));
+            $notfound = $this['config']->get('theme/notfound') ?: $this['config']->get('general/notfound');
+            if (substr($notfound, -5) === '.twig') {
+                return $this['render']->render($notfound);
             } else {
-                $content = $this['storage']->getContent($this['config']->get('general/notfound'), array('returnsingle' => true));
+                $content = $this['storage']->getContent($notfound, array('returnsingle' => true));
 
                 // Then, select which template to use, based on our 'cascading templates rules'
                 if ($content instanceof Content && !empty($content->id)) {

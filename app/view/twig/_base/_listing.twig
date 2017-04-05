@@ -96,6 +96,20 @@
                 <a href="{{ thumb_large }}" class="magnific" title="{{ thumb_title }}">
                     <img src="{{ thumb_small }}" width="{{ thumbsize }}" height="{{ thumb_height }}" alt="{{ __('Thumbnail') }}">
                 </a>
+            {% else %}
+                {% set hasOutputtedImage = false %}
+                {% for key, field in content.contenttype.fields if field.type == 'imagelist' and content[key]|first is not empty and not hasOutputtedImage %}
+                    {% set hasOutputtedImage = true %}
+                    {# Hack to add alt attribute #}
+                    {#{ content.getImage|popup(thumbsize, thumbsize * 0.75, 'c') }#}
+                    {% set thumb_height = (thumbsize * 0.75)|round %}
+                    {% set thumb_small = content[key]|first|thumbnail(thumbsize, thumb_height, 'c') %}
+                    {% set thumb_large = content[key]|first|thumbnail(1000, 800, 'r') %}
+                    {% set thumb_title = __('Image') ~ ': ' ~ content[key]|first %}
+                    <a href="{{ thumb_large }}" class="magnific" title="{{ thumb_title }}">
+                        <img src="{{ thumb_small }}" width="{{ thumbsize }}" height="{{ thumb_height }}" alt="{{ __('Thumbnail') }}">
+                    </a>
+                {% endfor %}
             {% endif %}
         </td>
     {% endblock %}

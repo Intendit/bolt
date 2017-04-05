@@ -42,7 +42,7 @@ roles-hierarchy:
     # and deleted by [ root, admin ] roles.
     manipulate:
         admin: [ ]
-        developer: [ admin ]
+        developer: [ ]
         chief-editor: [ admin, developer ]
         editor: [ admin, developer, chief-editor ]
         guest: [ admin, developer, chief-editor ]
@@ -67,16 +67,16 @@ global:
     dbcheck: [ admin, developer ]
     dbupdate: [ admin, developer ]
     dbupdate_result: [ admin, developer ]
-    extensions: [ developer ]
-    extensions:config: [ developer ]
+    extensions: [ admin, developer ]
+    extensions:config: [ admin, developer ]
     fileedit: [ admin, developer ]
-    files:config: [ developer ]
-    files:theme: [ developer ]
+    files:config: [ admin, developer ]
+    files:theme: [ admin, developer ]
     files:uploads: [ admin, developer, chief-editor, editor ]
-    files: [ admin, developer, chief-editor, editor ]
-    prefill: [ developer ]
+    files: [ chief-editor, admin, developer ]
+    prefill: [ admin, developer ]
     profile: [ everyone ] # edit own profile
-    settings: [ admin, developer, everyone ]
+    settings: [ chief-editor, admin, developer ]
     translation: [ developer ]
     useraction: [ admin, developer ] # enable/disable/delete
     useredit: [ admin, developer ] # user settings
@@ -85,7 +85,7 @@ global:
     maintenance-mode: [ everyone ] # view the frontend when in maintenance mode
     omnisearch: [ everyone ]
     # Access to the various logs
-    changelog: [ admin, developer, chief-editor ]
+    changelog: [ admin, developer ]
     systemlog: [ admin, developer ]
     # The following permissions are particularly important: login and postLogin
     # determine who may see and use the login form. If you set them to anything
@@ -96,6 +96,8 @@ global:
     # Likewise, 'logout' needs to be granted to 'everyone', otherwise people
     # cannot log out anymore.
     logout: [ everyone ]
+    
+    labels: [ everyone ]
 
 # For content type related actions, permissions can be set individually for
 # each content type. For this, we define three groups of permission sets.
@@ -151,7 +153,7 @@ contenttype-all:
     create: [ developer, admin, chief-editor ]
     publish: [ developer, admin, chief-editor ]
     depublish: [ developer, admin, chief-editor ]
-    delete: [ developer, admin ]
+    delete: [ developer, admin, chief-editor ]
     change-ownership: [ developer, admin ]
 
 contenttype-default:

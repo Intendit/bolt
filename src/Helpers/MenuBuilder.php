@@ -24,7 +24,7 @@ class MenuBuilder
     {
         $menus = $this->app['config']->get('menu');
 
-        if (!empty($identifier) && isset($menus[$identifier])) {
+        if (is_string($identifier) && !empty($identifier) && isset($menus[$identifier])) {
             $name = strtolower($identifier);
             $menu = $menus[$identifier];
         } else {
@@ -110,6 +110,9 @@ class MenuBuilder
      */
     private function resolvePathToContent(array $item)
     {
+        $request = $this->app['request'];
+        $locale = $request->get('_locale');
+
         if ($item['path'] === 'homepage') {
             $item['link'] = $this->app['resources']->getUrl('root');
 
@@ -135,6 +138,9 @@ class MenuBuilder
 
         // Pre-set our link in case the match() throws an exception
         $item['link'] = $this->app['resources']->getUrl('root') . $path;
+        if($locale){
+            $item['link'] = '/' . $locale . '/' . $path;
+        }
 
         try {
             // See if we have a 'content/id' or 'content/slug' path
@@ -144,7 +150,11 @@ class MenuBuilder
                 // that we have, this will catch any valid configured
                 // contenttype slug and record combination, or throw a
                 // ResourceNotFoundException exception otherwise
-                $this->app['url_matcher']->match('/' . $path);
+                if($locale){
+                    $this->app['url_matcher']->match('/' . $locale . '/' . $path);
+                }else{
+                    $this->app['url_matcher']->match('/' . $path);
+                }
 
                 // If we found a valid routing match then we're still here,
                 // attempt to retrieve the actual record and use its values.

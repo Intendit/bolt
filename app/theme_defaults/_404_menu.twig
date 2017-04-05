@@ -1,0 +1,8 @@
+{% from _self import display_menu_item %}
+{% for item in menu %}
+    <li>
+        <a href="{{ item.link }}" title='{{ item.title|default('')|escape }}'>
+            {{ item[app.request.get('_locale')~'label'] ?: item.label|default('-') }}
+        </a>
+    </li>
+{% endfor %}

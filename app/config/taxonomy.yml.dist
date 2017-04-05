@@ -1,28 +1,26 @@
 # This file defines the different types of taxonomies in Bolt. See the
 # documentation for details: http://docs.bolt.cm/taxonomies#taxonomies
 
-tags:
-    slug: tags
-    singular_slug: tag
-    behaves_like: tags
-    postfix: "Add some freeform tags. Start a new tag by typing a comma or space."
-    allow_spaces: false
-    #listing_template: tag-listing.twig #custom template
+#taggar:
+#    name: Taggar
+#    slug: taggar
+#    singular_slug: tagg
+#    behaves_like: tags
+#    postfix: "Skriv ett par taggar, separera dem med mellanslag eller komma."
 
-chapters:
-    slug: chapters
-    singular_slug: chapter
-    behaves_like: grouping
-    options: { main: "The main chapter", meta: "Meta Chapter", other: "The other stuff" }
-    has_sortorder: true
+#kategorier:
+#    name: Kategorier
+#    slug: kategorier
+#    singular_name: Kategori
+#    singular_slug: kategori
+#    behaves_like: categories
+#    multiple: true
+#    options: { batar: "Båtar", bilar: "Bilar", hus: "Hus" }
 
-categories:
-    name: Categories
-    slug: categories
-    singular_name: Category
-    singular_slug: category
-    behaves_like: categories
-    multiple: true
-    options: [ news, events, movies, music, books, life, love, fun ]
-    # autocomplete: false
-    # height: 10em
+#grupper:
+#    name: Grupper
+#    slug: grupper
+#    singular_slug: grupp
+#    behaves_like: grouping
+#    options: { batar: "Båtar", bilar: "Bilar", hus: "Hus" }
+#    has_sortorder: true
