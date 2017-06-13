@@ -84,7 +84,8 @@ var init = {
                          $('#saveeditfile').click();
                     },
                     "Ctrl-/": "undo",
-                    "Ctrl-F": "findPersistent",
+                    "Ctrl-F":"find",
+                    "Alt-F":"findPersistent",
                     "Ctrl-H": "replaceAll",
                     "Ctrl-Space": "autocomplete"
                 },
