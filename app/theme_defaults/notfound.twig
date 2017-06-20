@@ -36,8 +36,8 @@
                     {% endif %}
                 </a>
             </div>
-             <h2>{{ (l("Sidan kunde inte hittas")|default("Sidan kunde inte hittas"))|capitalize }}</h2>
-            <p>{{ (l('Besök gärna någon av länkarna nedan')|default('Besök gärna någon av länkarna nedan'))|capitalize }}</p>
+             {{ (l("Sidan kunde inte hittas")|default("Sidan kunde inte hittas"))|capitalize|striptags }}
+            {# <p>{{ (l('Besök gärna någon av länkarna nedan')|default('Besök gärna någon av länkarna nedan'))|capitalize }}</p> #}
             <ul>{{ (menu(null, '_404_menu.twig', {show_submenus: false})|default('') ?: '<li><a href="' ~ path('homepage') ~ '">' ~ l('Hem') ~ '</a></li>')|raw }}</ul>
         </div>
 
