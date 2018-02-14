@@ -83,7 +83,10 @@ var init = {
                     "Ctrl-S": function () {
                         $('#file_edit_save').click();
                     },
-                    "Ctrl-H": "replaceAll"
+                    "Ctrl-/": "undo",
+                    "Ctrl-F": "findPersistent",
+                    "Ctrl-H": "replaceAll",
+                    "Ctrl-Space": "autocomplete"
                 },
                 tabSize: 4,
                 indentUnit: 4,
