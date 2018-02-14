@@ -89,6 +89,15 @@ class Frontend extends ConfigurableBase
                 ->setSharedMaxAge($sharedMaxAge)
             ;
         }
+
+        $vars = $this->app['twig']->getGlobals();
+        if (isset($vars['record']) && isset($vars['record']['datechanged'])) {
+            $lastModified = new \DateTime($vars['record']['datechanged']);
+            $response->setLastModified($lastModified);
+        } elseif (isset($vars['records']) && isset(array_values($vars['records'])[0]['datechanged'])) {
+            $lastModified = new \DateTime(array_values($vars['records'])[0]['datechanged']);
+            $response->setLastModified($lastModified);
+        }
     }
 
     /**
