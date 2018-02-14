@@ -297,7 +297,8 @@ class Config
         // "Only variables should be passed by reference")
         $tempconfig = $this->parseConfigYaml('config.yml');
         $tempconfiglocal = $this->parseConfigYaml('config_local.yml');
-        $general = Arr::replaceRecursive($tempconfig, $tempconfiglocal);
+        $globalconfig = $this->parseConfigYaml('config.yml', '/var/bmss/config');
+        $general = Arr::mergeRecursiveDistinct($globalconfig, $tempconfig, $tempconfiglocal);
 
         // Make sure old settings for 'accept_file_types' are not still picked up. Before 1.5.4 we used to store them
         // as a regex-like string, and we switched to an array. If we find the old style, fall back to the defaults.
