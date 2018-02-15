@@ -5,6 +5,8 @@ namespace Bolt;
 use Bolt\Collection\Arr;
 use Bolt\Common\Deprecated;
 use Bolt\Controller\Zone;
+use Bolt\Filesystem\Filesystem;
+use Bolt\Filesystem\Adapter\Local;
 use Bolt\Filesystem\Exception\FileNotFoundException;
 use Bolt\Filesystem\Exception\IOException;
 use Bolt\Filesystem\Exception\ParseException;
@@ -297,8 +299,10 @@ class Config
         // "Only variables should be passed by reference")
         $tempconfig = $this->parseConfigYaml('config.yml');
         $tempconfiglocal = $this->parseConfigYaml('config_local.yml');
-        $globalconfig = $this->parseConfigYaml('config.yml', '/var/bmss/config');
-        $general = Arr::mergeRecursiveDistinct($globalconfig, $tempconfig, $tempconfiglocal);
+        $filesystem = new Filesystem(new Local('/var/bmss/config'));
+        $dir = $filesystem->getDir('/');        
+        $globalconfig = $this->parseConfigYaml('config.yml', $dir);
+        $general = Arr::replaceRecursive($globalconfig, $tempconfig, $tempconfiglocal);
 
         // Make sure old settings for 'accept_file_types' are not still picked up. Before 1.5.4 we used to store them
         // as a regex-like string, and we switched to an array. If we find the old style, fall back to the defaults.
