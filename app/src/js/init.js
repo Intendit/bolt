@@ -85,7 +85,8 @@ var init = {
                     },
                     "Ctrl-H": "replaceAll",
                     "Ctrl-/": "undo",
-                    "Ctrl-F": "findPersistent"                    
+                    "Ctrl-F":"find",
+                    "Alt-F":"findPersistent",
                 },
                 tabSize: 4,
                 indentUnit: 4,
