@@ -109,12 +109,17 @@
     margin-right: 20px;
 }
 
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+    color: #333;
+}
+
 .navbar-bolt {
     background: transparent;
     background-color: $boltblue;
     background-repeat: repeat-x;
-    border-bottom: 0;
-    box-shadow: 0 -5px 0 rgba(0, 0, 0, 0.15) inset;
+    border-bottom: 6px solid transparent;
+    -webkit-border-image: url(/view/img/iborder.png) 100% 6 stretch;
+    border-image: url(/view/img/iborder.png) 100% 6 stretch;
 
     div.navbar-collapse {
         float: right;
@@ -136,7 +141,7 @@
     .navbar-brand {
         display: inline-block;
         top: 0;
-        color: #fff;
+        color: #333;
         font-size: 28px;
         line-height: 28px;
         font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -148,8 +153,9 @@
         }
 
         img {
-            width: 26px;
-            height: 26px;
+            width: auto;
+            height: auto;
+            max-height: 100%;
             margin: 0 2px 2px 0;
         }
     }
@@ -174,7 +180,7 @@
 
 .navbar-site {
     display: inline-block;
-    color: #ccc !important;
+    color: #333 !important;
     font-size: 22px;
     line-height: 30px;
     margin-top: 8px;
@@ -189,22 +195,13 @@
     }
 }
 
-.navbar-brand:hover,
-.navbar-site:hover,
-.navbar-site:hover i
-{
-    color: #fff !important;
-    text-decoration: none;
-    background-color: #428bca;
-    outline: 0;
-}
 
 .navbar-toggle {
     float: left;
     margin: 11px 0 0 -8px;
     padding: 5px 8px 4px 5px;
     background-color: desaturate(lighten($boltblue, 45), 35);
-    border: 0 solid #fff !important;
+    border: 0 solid #333 !important;
     color: #222;
 }
 
