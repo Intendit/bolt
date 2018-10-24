@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ app.config.get('general/sitename')|default('') }} - Error </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            * { box-sizing: border-box; }
+            body {font-family: "Segoe UI", "Helvetica Neue", Helvetica, sans-serif; color:#252525; font-weight:400;}
+            h2 {font-size: 1.6em; margin: 0; padding:0; font-weight:bold; }
+            h3 {font-size: 1.3em; margin: 0; padding:0; font-weight:bold; }
+            a { color:#505050; text-decoration: none; }
+            p {margin: 0.2em 0 1em; }
+            .container {width: 100%; max-width: 1100px; margin: 0 auto; }
+            .pagenotfound {text-align:center; font-size:1.0em;  padding-top: 10vh;  }
+            .logo { margin: 0 auto 2em;  }
+            .logo img { max-width: 250px; height: auto; }
+            .logo span  {font-size: 1.8em; }
+            .pagenotfound ul {list-style-type:none; display:block; padding: 0; margin: 0.5em auto; width:100%; max-width: 550px; }
+            .pagenotfound li a { border-bottom: 1px solid #d0d0d0; display: inline-block; padding: 10px; width: 100%; }
+            .systeminfo {margin-top:3em; padding: 2em; background:#e4e4e4;}
+            .systeminfo ul, .systeminfo ol { list-style:disc; padding: 0 0 0 15px;   }
+            code, pre {padding: 0px 3px 2px; }
+            code {padding: 2px 4px; color: #dd119c; background-color: #d0d0d0; white-space: nowrap;}
+         </style>
+    </head>
+     <body>
+        {#  404 page  #}
+        <div class="pagenotfound container">
+            <div class="logo">
+                <a href="{{ path('homepage') }}">
+                    {% if theme.logo and file_exists(theme.logo) %}
+                        <img src="{{ theme.logo|image(300, 200, 'r') }}" alt="{{ app.config.get('general/sitename')|default('') }}" />
+                    {% else %}
+                        <span>{{ app.config.get('general/sitename')|default('')|upper }} </span>
+                    {% endif %}
+                </a>
+            </div>
+             <h2>{{ (l("Sidan kunde inte hittas")|default("Sidan kunde inte hittas"))|capitalize }}</h2>
+            <p>{{ (l('Besök gärna någon av länkarna nedan')|default('Besök gärna någon av länkarna nedan'))|capitalize }}</p>
+            <ul>{{ (menu(null, '_404_menu.twig', {show_submenus: false})|default('') ?: '<li><a href="' ~ path('homepage') ~ '">' ~ l('Hem') ~ '</a></li>')|raw }}</ul>
+        </div>
+         {# System info - only visible to logged in users #}
+        {% if 'admin' in app.users.currentuser.roles or 'root' in app.users.currentuser.roles %}
+            <div class="systeminfo container">
+                <h3>System info</h3>
+                <ul>
+                    <li>Previous URL: {{ app.request.headers.get('referer')|default('') }}</li>
+                    <li>URL: {{ app.request.schemeAndHttpHost|default('')~app.request.requestUri|default('') }}</li>
+                    <li>Class: {{ context.class|default('') }}</li>
+                    <li>Message: <strong>{{ context.message|default('') }}</strong></li>
+                    <li>Code: {{ context.code|default('') }}</li>
+                    {% if app.request.attributes.get('_route')|default('') %}
+                    <li>Route: "{{app.request.attributes.get('_route')}}" with:
+                        <ul>
+                            {% for key, param in app.request.attributes.get('_route_params')|default([]) %}
+                                <li>{{key}}: {{param}}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% for i in context.trace|default([]) %}
+                    {% if i.line is defined and i.class is defined %}
+                        <p>
+                            <strong>{{ i.class }}{{ i.type }}{{ i.function }}()</strong><br>
+                            <em>{{ i.file }}, {{ __('line') }} {{ i.line }}</em>
+                            {% if i.args is defined %}
+                                {{ print(i.args) }}
+                            {% endif %}
+                        </p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </body>
+</html>
